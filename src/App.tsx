@@ -37,7 +37,7 @@ function App() {
       <div className="form">
         <DiagramInput
           inputRef={fieldRefs.externalId}
-          label="Lbmx Id"
+          label="External Id"
           type="number"
           name="externalId"
           value={externalId}
