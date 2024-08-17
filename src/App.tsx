@@ -73,7 +73,7 @@ function App() {
         <table>
           <thead>
             <tr>
-              <th>Lbmx Id</th>
+              <th>External Id</th>
               <th>Business Name</th>
               <th>Supplier Number</th>
               <th>Model</th>
