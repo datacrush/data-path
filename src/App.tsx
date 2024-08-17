@@ -9,17 +9,20 @@ function App() {
     externalId: useRef<HTMLInputElement>(null),
     businessName: useRef<HTMLInputElement>(null),
     supplierNumber: useRef<HTMLInputElement>(null),
+    model: useRef<HTMLInputElement>(null),
   };
 
   const tableRefs = {
     externalId: useRef<HTMLTableCellElement>(null),
     businessName: useRef<HTMLTableCellElement>(null),
     supplierNumber: useRef<HTMLTableCellElement>(null),
+    model: useRef<HTMLTableCellElement>(null),
   };
 
-  const [externalId, setExternalId] = useState<number | null>(null);
-  const [businessName, setBusinessName] = useState<string | null>(null);
-  const [supplierNumber, setSupplierNumber] = useState<string | null>(null);
+  const [externalId, setExternalId] = useState<number>(57821);
+  const [businessName, setBusinessName] = useState<string>("");
+  const [supplierNumber, setSupplierNumber] = useState<string>("");
+  const [model, setModel] = useState<string | null>("Alpha Platinum 9000");
 
   return (
     <div>
@@ -37,6 +40,7 @@ function App() {
           label="Lbmx Id"
           type="number"
           name="externalId"
+          value={externalId}
           onInput={(value) => setExternalId(Number(value))}
         />
         <DiagramInput
@@ -44,6 +48,7 @@ function App() {
           label="Business Name"
           type="text"
           name="businessName"
+          value={businessName}
           onInput={(value) => setBusinessName(String(value))}
         />
         <DiagramInput
@@ -51,7 +56,16 @@ function App() {
           label="Supplier Number"
           type="text"
           name="supplierNumber"
+          value={supplierNumber}
           onInput={(value) => setSupplierNumber(String(value))}
+        />
+        <DiagramInput
+          inputRef={fieldRefs.supplierNumber}
+          label="Model"
+          type="text"
+          name="model"
+          value={model}
+          onInput={(value) => setModel(String(value))}
         />
       </div>
 
@@ -78,6 +92,7 @@ function App() {
                 value={supplierNumber}
                 inputRef={tableRefs.supplierNumber}
               />
+              <DiagramOutput value={model} inputRef={tableRefs.model} />
             </tr>
           </tbody>
         </table>

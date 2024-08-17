@@ -3,6 +3,7 @@ interface Props {
   type: string;
   name: string;
   inputRef: React.RefObject<HTMLInputElement>;
+  value?: string | number | null;
   onInput?: (value: number | string | null) => void;
 }
 
@@ -12,11 +13,12 @@ export default function DiagramInput({
   name,
   onInput,
   type,
+  value,
 }: Props) {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const element = event.target;
     if (onInput) {
-      onInput(element.value ?? null);
+      onInput(element.value ?? "");
     }
   };
 
@@ -29,6 +31,7 @@ export default function DiagramInput({
         id={name}
         name={name}
         type={type}
+        value={value ?? undefined}
       />
     </div>
   );
