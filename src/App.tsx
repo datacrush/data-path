@@ -76,6 +76,7 @@ function App() {
               <th>Lbmx Id</th>
               <th>Business Name</th>
               <th>Supplier Number</th>
+              <th>Model</th>
             </tr>
           </thead>
           <tbody>
