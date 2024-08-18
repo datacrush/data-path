@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import "./App.css";
 import DiagramInput from "./components/DiagramInput";
-import Node from "./components/Node";
 import DiagramOutput from "./components/DiagramTableCell";
+import Node, { NodeCoordinates } from "./components/Node";
+import Edge from "./components/Edge";
 
 function App() {
   const fieldRefs = {
@@ -24,15 +25,34 @@ function App() {
   const [supplierNumber, setSupplierNumber] = useState<string>("");
   const [model, setModel] = useState<string | null>("Alpha Platinum 9000");
 
+  const nodeFieldRefs: Record<string, React.RefObject<NodeCoordinates>> = {
+    externalId: useRef<NodeCoordinates>(null),
+    businessName: useRef<NodeCoordinates>(null),
+    supplierNumber: useRef<NodeCoordinates>(null),
+    model: useRef<NodeCoordinates>(null),
+  };
+
+  const nodeTableRefs: Record<string, React.RefObject<NodeCoordinates>> = {
+    externalId: useRef<NodeCoordinates>(null),
+    businessName: useRef<NodeCoordinates>(null),
+    supplierNumber: useRef<NodeCoordinates>(null),
+    model: useRef<NodeCoordinates>(null),
+  };
+
   return (
     <div>
       {Object.entries(fieldRefs).map(([key, value]) => (
-        <Node key={key} elementRef={value} />
+        <Node ref={nodeFieldRefs[key]} key={key} elementRef={value} />
       ))}
 
       {Object.entries(tableRefs).map(([key, value]) => (
-        <Node key={key} elementRef={value} />
+        <Node ref={nodeTableRefs[key]} key={key} elementRef={value} />
       ))}
+
+      <Edge
+        snp={nodeFieldRefs.supplierNumber.current?.right}
+        enp={nodeTableRefs.supplierNumber.current?.top}
+      />
 
       <div className="form">
         <DiagramInput
@@ -60,7 +80,7 @@ function App() {
           onInput={(value) => setSupplierNumber(String(value))}
         />
         <DiagramInput
-          inputRef={fieldRefs.supplierNumber}
+          inputRef={fieldRefs.model}
           label="Model"
           type="text"
           name="model"
