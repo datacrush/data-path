@@ -6,6 +6,8 @@ import Node, { NodeCoordinates } from "./components/Node";
 import Edge from "./components/Edge";
 
 function App() {
+  const origin = { x: 0, y: 0 };
+
   const fieldRefs = {
     externalId: useRef<HTMLInputElement>(null),
     businessName: useRef<HTMLInputElement>(null),
@@ -50,73 +52,90 @@ function App() {
       ))}
 
       <Edge
-        startPoint={nodeFieldRefs.supplierNumber.current?.right}
-        endPoint={nodeTableRefs.supplierNumber.current?.top}
+        startPoint={nodeFieldRefs.externalId.current?.right ?? origin}
+        endPoint={nodeTableRefs.externalId.current?.top ?? origin}
       />
 
-      <div className="form">
-        <DiagramInput
-          inputRef={fieldRefs.externalId}
-          label="External Id"
-          type="number"
-          name="externalId"
-          value={externalId}
-          onInput={(value) => setExternalId(Number(value))}
-        />
-        <DiagramInput
-          inputRef={fieldRefs.businessName}
-          label="Business Name"
-          type="text"
-          name="businessName"
-          value={businessName}
-          onInput={(value) => setBusinessName(String(value))}
-        />
-        <DiagramInput
-          inputRef={fieldRefs.supplierNumber}
-          label="Supplier Number"
-          type="text"
-          name="supplierNumber"
-          value={supplierNumber}
-          onInput={(value) => setSupplierNumber(String(value))}
-        />
-        <DiagramInput
-          inputRef={fieldRefs.model}
-          label="Model"
-          type="text"
-          name="model"
-          value={model}
-          onInput={(value) => setModel(String(value))}
-        />
-      </div>
+      <Edge
+        startPoint={nodeFieldRefs.businessName.current?.right ?? origin}
+        endPoint={nodeTableRefs.businessName.current?.top ?? origin}
+      />
 
-      <div className="table">
-        <table>
-          <thead>
-            <tr>
-              <th>External Id</th>
-              <th>Business Name</th>
-              <th>Supplier Number</th>
-              <th>Model</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <DiagramOutput
-                value={externalId}
-                inputRef={tableRefs.externalId}
-              />
-              <DiagramOutput
-                value={businessName}
-                inputRef={tableRefs.businessName}
-              />
-              <DiagramOutput
-                value={supplierNumber}
-                inputRef={tableRefs.supplierNumber}
-              />
-              <DiagramOutput value={model} inputRef={tableRefs.model} />
-            </tr>
-          </tbody>
-        </table>
+      <Edge
+        startPoint={nodeFieldRefs.supplierNumber.current?.right ?? origin}
+        endPoint={nodeTableRefs.supplierNumber.current?.top ?? origin}
+      />
+
+      <Edge
+        startPoint={nodeFieldRefs.model.current?.right ?? origin}
+        endPoint={nodeTableRefs.model.current?.top ?? origin}
+      />
+
+      <div className="content">
+        <div className="form">
+          <DiagramInput
+            inputRef={fieldRefs.externalId}
+            label="External Id"
+            type="number"
+            name="externalId"
+            value={externalId}
+            onInput={(value) => setExternalId(Number(value))}
+          />
+          <DiagramInput
+            inputRef={fieldRefs.businessName}
+            label="Business Name"
+            type="text"
+            name="businessName"
+            value={businessName}
+            onInput={(value) => setBusinessName(String(value))}
+          />
+          <DiagramInput
+            inputRef={fieldRefs.supplierNumber}
+            label="Supplier Number"
+            type="text"
+            name="supplierNumber"
+            value={supplierNumber}
+            onInput={(value) => setSupplierNumber(String(value))}
+          />
+          <DiagramInput
+            inputRef={fieldRefs.model}
+            label="Model"
+            type="text"
+            name="model"
+            value={model}
+            onInput={(value) => setModel(String(value))}
+          />
+        </div>
+
+        <div className="table">
+          <table>
+            <thead>
+              <tr>
+                <th>External Id</th>
+                <th>Business Name</th>
+                <th>Supplier Number</th>
+                <th>Model</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <DiagramOutput
+                  value={externalId}
+                  inputRef={tableRefs.externalId}
+                />
+                <DiagramOutput
+                  value={businessName}
+                  inputRef={tableRefs.businessName}
+                />
+                <DiagramOutput
+                  value={supplierNumber}
+                  inputRef={tableRefs.supplierNumber}
+                />
+                <DiagramOutput value={model} inputRef={tableRefs.model} />
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

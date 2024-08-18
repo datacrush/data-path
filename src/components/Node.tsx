@@ -97,16 +97,16 @@ export const Node = forwardRef<NodeCoordinates, Props>(
         }}
       >
         {points.top && (
-          <circle cx={points.top.x} cy={points.top.y} r="5" fill="red" />
+          <circle cx={points.top.x} cy={points.top.y} r="5" fill="none" />
         )}
         {points.right && (
-          <circle cx={points.right.x} cy={points.right.y} r="5" fill="green" />
+          <circle cx={points.right.x} cy={points.right.y} r="5" fill="none" />
         )}
         {points.bottom && (
-          <circle cx={points.bottom.x} cy={points.bottom.y} r="5" fill="blue" />
+          <circle cx={points.bottom.x} cy={points.bottom.y} r="5" fill="none" />
         )}
         {points.left && (
-          <circle cx={points.left.x} cy={points.left.y} r="5" fill="cyan" />
+          <circle cx={points.left.x} cy={points.left.y} r="5" fill="none" />
         )}
       </svg>
     );
