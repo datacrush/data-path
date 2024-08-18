@@ -9,12 +9,20 @@ interface Point {
   y: number;
 }
 
-export default function Node({ elementRef: ref }: Props) {
-  const [top, setTop] = useState<Point | null>(null);
-  const [right, setRight] = useState<Point | null>(null);
-  const [bottom, setBottom] = useState<Point | null>(null);
-  const [left, setLeft] = useState<Point | null>(null);
+export interface NodeCoordinates {
+  top: Point;
+  right: Point;
+  bottom: Point;
+  left: Point;
+}
 
+export default function Node({ elementRef: ref }: Props) {
+  const [points, setPoints] = useState<NodeCoordinates>({
+    top: { x: 0, y: 0 },
+    right: { x: 0, y: 0 },
+    bottom: { x: 0, y: 0 },
+    left: { x: 0, y: 0 },
+  });
   const previousRect = useRef<DOMRect | null>(null);
 
   useEffect(() => {
@@ -22,19 +30,12 @@ export default function Node({ elementRef: ref }: Props) {
     if (element) {
       const calculateNodePositions = () => {
         const rect = element.getBoundingClientRect();
-
-        // Calculate and update the position states
-        const [top, right, bottom, left] = [
-          { x: rect.left + rect.width / 2, y: rect.top },
-          { x: rect.right, y: rect.top + rect.height / 2 },
-          { x: rect.left + rect.width / 2, y: rect.bottom },
-          { x: rect.left, y: rect.top + rect.height / 2 },
-        ];
-
-        setTop(top);
-        setRight(right);
-        setBottom(bottom);
-        setLeft(left);
+        setPoints({
+          top: { x: rect.left + rect.width / 2, y: rect.top },
+          right: { x: rect.right, y: rect.top + rect.height / 2 },
+          bottom: { x: rect.left + rect.width / 2, y: rect.bottom },
+          left: { x: rect.left, y: rect.top + rect.height / 2 },
+        });
       };
 
       const monitorPositionChanges = () => {
@@ -86,10 +87,18 @@ export default function Node({ elementRef: ref }: Props) {
         pointerEvents: "none",
       }}
     >
-      {top && <circle cx={top.x} cy={top.y} r="5" fill="red" />}
-      {right && <circle cx={right.x} cy={right.y} r="5" fill="green" />}
-      {bottom && <circle cx={bottom.x} cy={bottom.y} r="5" fill="blue" />}
-      {left && <circle cx={left.x} cy={left.y} r="5" fill="cyan" />}
+      {points.top && (
+        <circle cx={points.top.x} cy={points.top.y} r="5" fill="red" />
+      )}
+      {points.right && (
+        <circle cx={points.right.x} cy={points.right.y} r="5" fill="green" />
+      )}
+      {points.bottom && (
+        <circle cx={points.bottom.x} cy={points.bottom.y} r="5" fill="blue" />
+      )}
+      {points.left && (
+        <circle cx={points.left.x} cy={points.left.y} r="5" fill="cyan" />
+      )}
     </svg>
   );
 }
