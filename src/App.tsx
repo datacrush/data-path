@@ -50,8 +50,8 @@ function App() {
       ))}
 
       <Edge
-        snp={nodeFieldRefs.supplierNumber.current?.right}
-        enp={nodeTableRefs.supplierNumber.current?.top}
+        startPoint={nodeFieldRefs.supplierNumber.current?.right}
+        endPoint={nodeTableRefs.supplierNumber.current?.top}
       />
 
       <div className="form">

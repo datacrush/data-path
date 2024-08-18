@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Point } from "./Node";
 
 interface EdgeProps {
-  snp: Point | undefined;
-  enp: Point | undefined;
+  startPoint: Point | undefined;
+  endPoint: Point | undefined;
   strokeColor?: string;
   strokeWidth?: number;
 }
 
 const Edge: React.FC<EdgeProps> = ({
-  snp,
-  enp,
+  startPoint,
+  endPoint,
   strokeColor = "black",
   strokeWidth = 2,
 }) => {
@@ -18,16 +18,16 @@ const Edge: React.FC<EdgeProps> = ({
 
   useEffect(() => {
     const updatePath = () => {
-      if (snp && enp) {
+      if (startPoint && endPoint) {
         // Simple straight line (you can modify this to be more complex, like Bezier curves)
-        const path = `M${snp.x},${snp.y} L${enp.x},${enp.y}`;
+        const path = `M${startPoint.x},${startPoint.y} L${endPoint.x},${endPoint.y}`;
 
         setPathData(path);
       }
     };
 
     updatePath();
-  }, [snp, enp]);
+  }, [startPoint, endPoint]);
 
   return (
     <svg
