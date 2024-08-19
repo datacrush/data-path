@@ -6,28 +6,39 @@ export interface Action {
   value: string | number;
 }
 
-interface Props<T> {
-  state: T;
+export interface FieldSchema {
+  type: string;
+  label: string;
+}
+
+export type FormSchema = Record<string, FieldSchema>;
+
+export type FormState<T> = {
+  [K in keyof T]: number | string;
+};
+
+interface Props {
+  schema: FormSchema;
+  state: Record<string, string | number>;
   updateField: (field: string, value: string | number) => void;
 }
 
-export default function Form<T>({ updateField, state }: Props<T>) {
+export default function Form({ schema, state, updateField }: Props) {
   return (
     <div className="form">
-      {Object.entries(state as Record<string, string | number>).map(
-        ([field, value]) => {
-          return (
-            <Input
-              key={field}
-              label={field}
-              name={field}
-              onInput={updateField}
-              position="right"
-              value={value}
-            />
-          );
-        }
-      )}
+      {Object.entries<FieldSchema>(schema).map(([field, value]) => {
+        return (
+          <Input
+            key={field}
+            label={value.label}
+            name={field}
+            onInput={updateField}
+            position="right"
+            type={value.type}
+            value={state[field]}
+          />
+        );
+      })}
     </div>
   );
 }

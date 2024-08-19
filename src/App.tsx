@@ -3,25 +3,25 @@ import { Provider } from "react-redux";
 
 import "./App.css";
 import Edge from "./components/Edge";
-import Form, { Action } from "./components/Form";
+import Form, { Action, FormSchema, FormState } from "./components/Form";
 import HeaderCell from "./components/HeaderCell";
 import { store } from "./state/store";
 
-interface FormState {
+interface AccountForm {
   externalId: number;
   businessName: string;
   supplierNumber: string;
   model: string;
 }
 
-const initialState: FormState = {
+const initialState: FormState<AccountForm> = {
   externalId: 57821,
   businessName: "",
   supplierNumber: "",
   model: "Alpha Platinum 9000",
 };
 
-function reducer(state: FormState, action: Action) {
+function reducer(state: FormState<AccountForm>, action: Action) {
   switch (action.type) {
     case "SET_FIELD":
       return {
@@ -32,6 +32,25 @@ function reducer(state: FormState, action: Action) {
       return state;
   }
 }
+
+const schema: FormSchema = {
+  externalId: {
+    type: "number",
+    label: "External ID",
+  },
+  businessName: {
+    type: "string",
+    label: "Business Name",
+  },
+  supplierNumber: {
+    type: "string",
+    label: "Supplier Number",
+  },
+  model: {
+    type: "string",
+    label: "Model",
+  },
+};
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -54,7 +73,7 @@ function App() {
       <Edge startPoint="input.model.right" endPoint="th.model.top" />
 
       <div className="content">
-        <Form state={state} updateField={updateField} />
+        <Form schema={schema} state={state} updateField={updateField} />
 
         <div className="table">
           <table>
