@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import "./App.css";
 import Edge from "./components/Edge";
 import Form, { Action, FormSchema, FormState } from "./components/Form";
-import HeaderCell from "./components/HeaderCell";
+import Table from "./components/Table";
 import { store } from "./state/store";
 
 interface AccountForm {
@@ -75,26 +75,7 @@ function App() {
       <div className="content">
         <Form schema={schema} state={state} updateField={updateField} />
 
-        <div className="table">
-          <table>
-            <thead>
-              <tr>
-                <HeaderCell name="model">Model</HeaderCell>
-                <HeaderCell name="supplierNumber">Supplier Number</HeaderCell>
-                <HeaderCell name="businessName">Business Name</HeaderCell>
-                <HeaderCell name="externalId">External Id</HeaderCell>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{state.model}</td>
-                <td>{state.supplierNumber}</td>
-                <td>{state.businessName}</td>
-                <td>{state.externalId}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Table name="Account" schema={schema} state={state} />
       </div>
     </Provider>
   );
