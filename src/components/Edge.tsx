@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Point } from "./Node";
+import React from "react";
+import { selectEdge } from "../state/selectors";
+import { useNodeSelector } from "../state/hooks";
 
 interface EdgeProps {
-  startPoint: Point;
-  endPoint: Point;
+  startPoint: string;
+  endPoint: string;
   strokeColor?: string;
   strokeWidth?: number;
 }
@@ -14,19 +15,9 @@ const Edge: React.FC<EdgeProps> = ({
   strokeColor = "black",
   strokeWidth = 2,
 }) => {
-  const [pathData, setPathData] = useState<string>("");
+  const pathData = useNodeSelector(selectEdge(startPoint, endPoint));
 
-  useEffect(() => {
-    const path = `
-    M${startPoint.x},${startPoint.y} 
-    H${endPoint.x} 
-    V${endPoint.y}
-  `;
-
-    setPathData(path.trim());
-  }, [startPoint, endPoint]);
-
-  return (
+  return pathData ? (
     <svg
       style={{
         position: "absolute",
@@ -44,7 +35,7 @@ const Edge: React.FC<EdgeProps> = ({
         fill="none"
       />
     </svg>
-  );
+  ) : null;
 };
 
 export default Edge;

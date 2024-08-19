@@ -5,8 +5,13 @@ import {
   useRef,
   useState,
 } from "react";
+import { useAppDispatch } from "../state/hooks";
+import { upsertNode } from "../state/slices";
 
 interface Props {
+  name: string;
+  nameSpace: string;
+  position: "top" | "right" | "bottom" | "left";
   elementRef: React.RefObject<HTMLInputElement | HTMLTableCellElement>;
 }
 
@@ -23,8 +28,10 @@ export interface NodeCoordinates {
 }
 
 export const Node = forwardRef<NodeCoordinates, Props>(
-  ({ elementRef }: Props, ref) => {
-    const [points, setPoints] = useState<NodeCoordinates>({
+  ({ elementRef, nameSpace, name, position }: Props, ref) => {
+    const dispatch = useAppDispatch();
+    const nodeName = `${nameSpace}.${name}.${position}`;
+    const [points] = useState<NodeCoordinates>({
       top: { x: 0, y: 0 },
       right: { x: 0, y: 0 },
       bottom: { x: 0, y: 0 },
@@ -39,12 +46,19 @@ export const Node = forwardRef<NodeCoordinates, Props>(
       if (element) {
         const calculateNodePositions = () => {
           const rect = element.getBoundingClientRect();
-          setPoints({
+          const availableNodes = {
             top: { x: rect.left + rect.width / 2, y: rect.top },
             right: { x: rect.right, y: rect.top + rect.height / 2 },
             bottom: { x: rect.left + rect.width / 2, y: rect.bottom },
             left: { x: rect.left, y: rect.top + rect.height / 2 },
-          });
+          };
+
+          dispatch(
+            upsertNode({
+              name: nodeName,
+              ...availableNodes[position],
+            })
+          );
         };
 
         const monitorPositionChanges = () => {
@@ -83,7 +97,7 @@ export const Node = forwardRef<NodeCoordinates, Props>(
           previousRect.current = null;
         };
       }
-    }, [elementRef]);
+    }, [dispatch, elementRef, nodeName, position]);
 
     return (
       <svg
