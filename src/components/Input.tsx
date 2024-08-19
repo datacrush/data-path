@@ -4,9 +4,9 @@ import { useRegisterNode } from "../lib/hooks";
 interface Props {
   label: string;
   name: string;
-  onInput?: (value: number | string | null) => void;
+  onInput?: (field: string, value: number | string) => void;
   position: "top" | "right" | "bottom" | "left";
-  type: string;
+  type?: string;
   value?: string | number | null;
 }
 
@@ -15,7 +15,7 @@ export default function Input({
   name,
   onInput,
   position,
-  type,
+  type = "text",
   value,
 }: Props) {
   const ref = useRef<HTMLInputElement>(null);
@@ -26,7 +26,7 @@ export default function Input({
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const element = event.target;
     if (onInput) {
-      onInput(element.value ?? "");
+      onInput(name, element.value ?? "");
     }
   };
 

@@ -1,8 +1,19 @@
-.diagram-input > label {
-  display: block;
+.form {
+  width: 10em;
+}
+
+.diagram-input {
+  display: flex;
+  flex-direction: column;
 }
 
 .table {
   display: flex;
   justify-content: end;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }

@@ -1,17 +1,44 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import { Provider } from "react-redux";
 
 import "./App.css";
 import Edge from "./components/Edge";
+import Form, { Action } from "./components/Form";
 import HeaderCell from "./components/HeaderCell";
-import Input from "./components/Input";
 import { store } from "./state/store";
 
+interface FormState {
+  externalId: number;
+  businessName: string;
+  supplierNumber: string;
+  model: string;
+}
+
+const initialState: FormState = {
+  externalId: 57821,
+  businessName: "",
+  supplierNumber: "",
+  model: "Alpha Platinum 9000",
+};
+
+function reducer(state: FormState, action: Action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+    default:
+      return state;
+  }
+}
+
 function App() {
-  const [externalId, setExternalId] = useState<number>(57821);
-  const [businessName, setBusinessName] = useState<string>("");
-  const [supplierNumber, setSupplierNumber] = useState<string>("");
-  const [model, setModel] = useState<string | null>("Alpha Platinum 9000");
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const updateField = (field: string, value: string | number) => {
+    dispatch({ type: "SET_FIELD", field, value });
+  };
 
   return (
     <Provider store={store}>
@@ -25,63 +52,29 @@ function App() {
         endPoint="th.supplierNumber.top"
       />
       <Edge startPoint="input.model.right" endPoint="th.model.top" />
-      <div>
-        <div className="content">
-          <div className="form">
-            <Input
-              label="External Id"
-              name="externalId"
-              onInput={(value) => setExternalId(Number(value))}
-              position="right"
-              type="number"
-              value={externalId}
-            />
-            <Input
-              label="Business Name"
-              name="businessName"
-              onInput={(value) => setBusinessName(String(value))}
-              position="right"
-              type="text"
-              value={businessName}
-            />
-            <Input
-              label="Supplier Number"
-              name="supplierNumber"
-              onInput={(value) => setSupplierNumber(String(value))}
-              position="right"
-              type="text"
-              value={supplierNumber}
-            />
-            <Input
-              label="Model"
-              name="model"
-              onInput={(value) => setModel(String(value))}
-              position="right"
-              type="text"
-              value={model}
-            />
-          </div>
 
-          <div className="table">
-            <table>
-              <thead>
-                <tr>
-                  <HeaderCell name="externalId">External Id</HeaderCell>
-                  <HeaderCell name="businessName">Business Name</HeaderCell>
-                  <HeaderCell name="supplierNumber">Supplier Number</HeaderCell>
-                  <HeaderCell name="model">Model</HeaderCell>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{externalId}</td>
-                  <td>{businessName}</td>
-                  <td>{supplierNumber}</td>
-                  <td>{model}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div className="content">
+        <Form state={state} updateField={updateField} />
+
+        <div className="table">
+          <table>
+            <thead>
+              <tr>
+                <HeaderCell name="model">Model</HeaderCell>
+                <HeaderCell name="supplierNumber">Supplier Number</HeaderCell>
+                <HeaderCell name="businessName">Business Name</HeaderCell>
+                <HeaderCell name="externalId">External Id</HeaderCell>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{state.model}</td>
+                <td>{state.supplierNumber}</td>
+                <td>{state.businessName}</td>
+                <td>{state.externalId}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </Provider>
