@@ -9,6 +9,7 @@ export interface Action {
 export interface FieldSchema {
   type: string;
   label: string;
+  display?: boolean;
 }
 
 export type FormSchema = Record<string, FieldSchema>;
