@@ -1,3 +1,4 @@
+import Cell from "./Cell";
 import { FormState } from "./Form";
 import HeaderCell from "./HeaderCell";
 
@@ -35,7 +36,9 @@ export default function Table<T>({ name, schema, state }: Props<T>) {
         <tbody>
           <tr>
             {Object.keys(schema).map((key) => (
-              <td key={key}>{String(state[key as keyof T])}</td>
+              <Cell name={`${name}.${key}`} key={key}>
+                {String(state[key as keyof T])}
+              </Cell>
             ))}
           </tr>
         </tbody>

@@ -128,12 +128,33 @@ function App() {
       />
       <Edge startPoint="input.model.right" endPoint="account.model.top" />
 
+      <Edge
+        startPoint="account.accountKey.bottom"
+        endPoint="accountLocation.accountKey.top"
+      />
+      <Edge
+        startPoint="account.model.bottom"
+        endPoint="accountLocation.model.top"
+      />
+      <Edge
+        startPoint="account.supplierNumber.bottom"
+        endPoint="accountLocation.supplierNumber.top"
+      />
+      <Edge
+        startPoint="account.businessName.bottom"
+        endPoint="accountLocation.businessName.top"
+      />
+      <Edge
+        startPoint="account.externalId.bottom"
+        endPoint="accountLocation.externalId.top"
+      />
+
       <div className="content">
         <Form schema={schema} state={state} updateField={updateField} />
 
         <Table name="account" schema={accountTable} state={state} />
         <Table
-          name="AccountLocation"
+          name="accountLocation"
           schema={accountLocationTable}
           state={state}
         />
