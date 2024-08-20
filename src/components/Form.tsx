@@ -15,7 +15,7 @@ export interface FieldSchema {
 export type FormSchema = Record<string, FieldSchema>;
 
 export type FormState<T> = {
-  [K in keyof T]: number | string;
+  [K in keyof T]: T[K];
 };
 
 interface Props {
@@ -28,7 +28,7 @@ export default function Form({ schema, state, updateField }: Props) {
   return (
     <div className="form">
       {Object.entries<FieldSchema>(schema).map(([field, value]) => {
-        return (
+        return value.display ?? true ? (
           <Input
             key={field}
             label={value.label}
@@ -38,7 +38,7 @@ export default function Form({ schema, state, updateField }: Props) {
             type={value.type}
             value={state[field]}
           />
-        );
+        ) : null;
       })}
     </div>
   );

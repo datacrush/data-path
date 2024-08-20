@@ -4,10 +4,12 @@ import { Provider } from "react-redux";
 import "./App.css";
 import Edge from "./components/Edge";
 import Form, { Action, FormSchema, FormState } from "./components/Form";
-import Table from "./components/Table";
+import Table, { TableSchema } from "./components/Table";
 import { store } from "./state/store";
 
 interface AccountForm {
+  accountKey: number;
+  accountLocationKey?: number;
   externalId: number;
   businessName: string;
   supplierNumber: string;
@@ -15,6 +17,8 @@ interface AccountForm {
 }
 
 const initialState: FormState<AccountForm> = {
+  accountKey: 12345,
+  accountLocationKey: 67890,
   externalId: 57821,
   businessName: "",
   supplierNumber: "",
@@ -34,6 +38,16 @@ function reducer(state: FormState<AccountForm>, action: Action) {
 }
 
 const schema: FormSchema = {
+  accountKey: {
+    type: "number",
+    label: "AccountKey",
+    display: false,
+  },
+  accountLocationKey: {
+    type: "number",
+    label: "AccountLocationKey",
+    display: false,
+  },
   externalId: {
     type: "number",
     label: "External ID",
@@ -52,6 +66,45 @@ const schema: FormSchema = {
   },
 };
 
+const accountTable: TableSchema<AccountForm> = {
+  accountKey: {
+    label: "AccountKey",
+  },
+  model: {
+    label: "Model",
+  },
+  supplierNumber: {
+    label: "SupplierNumber",
+  },
+  businessName: {
+    label: "BusinessName",
+  },
+  externalId: {
+    label: "ExternalId",
+  },
+};
+
+const accountLocationTable: TableSchema<AccountForm> = {
+  accountLocationKey: {
+    label: "AccountLocationKey",
+  },
+  accountKey: {
+    label: "AccountKey",
+  },
+  model: {
+    label: "Model",
+  },
+  supplierNumber: {
+    label: "SupplierNumber",
+  },
+  businessName: {
+    label: "BusinessName",
+  },
+  externalId: {
+    label: "ExternalId",
+  },
+};
+
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -61,21 +114,29 @@ function App() {
 
   return (
     <Provider store={store}>
-      <Edge startPoint="input.externalId.right" endPoint="th.externalId.top" />
+      <Edge
+        startPoint="input.externalId.right"
+        endPoint="account.externalId.top"
+      />
       <Edge
         startPoint="input.businessName.right"
-        endPoint="th.businessName.top"
+        endPoint="account.businessName.top"
       />
       <Edge
         startPoint="input.supplierNumber.right"
-        endPoint="th.supplierNumber.top"
+        endPoint="account.supplierNumber.top"
       />
-      <Edge startPoint="input.model.right" endPoint="th.model.top" />
+      <Edge startPoint="input.model.right" endPoint="account.model.top" />
 
       <div className="content">
         <Form schema={schema} state={state} updateField={updateField} />
 
-        <Table name="Account" schema={schema} state={state} />
+        <Table name="account" schema={accountTable} state={state} />
+        <Table
+          name="AccountLocation"
+          schema={accountLocationTable}
+          state={state}
+        />
       </div>
     </Provider>
   );

@@ -1,38 +1,41 @@
+import { FormState } from "./Form";
 import HeaderCell from "./HeaderCell";
 
 export interface ColumnSchema {
   label: string;
 }
 
-export type TableSchema = Record<string, ColumnSchema>;
+export type TableSchema<T> = {
+  [K in keyof T]: ColumnSchema;
+};
 
 export type TableState<T> = {
-  [K in keyof T]: number | string;
+  [K in keyof T]: T[K];
 };
 
 interface Props<T> {
   name?: string;
-  schema: TableSchema;
-  state: TableState<T>;
+  schema: TableSchema<T>;
+  state: FormState<T>;
 }
 
-export default function Table<T>({ schema, state }: Props<T>) {
+export default function Table<T>({ name, schema, state }: Props<T>) {
   return (
     <div className="table">
       <table>
         <thead>
           <tr>
             {Object.keys(schema).map((key) => (
-              <HeaderCell key={key} name={key}>
-                {schema[key].label}
+              <HeaderCell key={key} name={`${name}.${key}`}>
+                {schema[key as keyof T].label}
               </HeaderCell>
             ))}
           </tr>
         </thead>
         <tbody>
           <tr>
-            {Object.entries(state).map(([field, value]) => (
-              <td key={field}>{String(value)}</td>
+            {Object.keys(schema).map((key) => (
+              <td key={key}>{String(state[key as keyof T])}</td>
             ))}
           </tr>
         </tbody>
